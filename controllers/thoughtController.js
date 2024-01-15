@@ -1,8 +1,8 @@
 const { User, Thought } = require('../models');
 
-// TODO getThoughts, 
+// DONE getThoughts, 
 // TODO getSingleThought,
-// TODO createThought,
+// DONE createThought,
 // TODO updateThought,
 // TODO deleteThought,
 // TODO addReaction,
@@ -11,13 +11,34 @@ const { User, Thought } = require('../models');
 module.exports = {
 
     // get all thoughts
-    async getThoughts(req, res) {},
+    async getThoughts(req, res) {
+        try {
+            const thoughts = await Thought.find();
+            res.json(thoughts);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 
     // get a single thought by _id 
     async getSingleThought(req, res) {},
 
     // create a new thought
-    async createThought(req, res) {},
+    async createThought(req, res) {
+        try {
+            const thought = await Thought.create(req.body);
+            
+            // after thought is created, $push to the thoughts array for the User
+            await User.findOneAndUpdate(
+                { username: thought.username }, 
+                { $push: { thoughts: thought._id } }
+            );
+
+            res.json(thought);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 
     // update a thought by _id
     async updateThought(req, res) {},

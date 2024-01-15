@@ -10,4 +10,7 @@ const {
   removeReaction,
 } = require('../../controllers/thoughtController');
 
+// // GET and POST at /api/thoughts
+router.route('/').get(getThoughts).post(createThought);
+
 module.exports = router;
