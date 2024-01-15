@@ -1,13 +1,5 @@
 const { User, Thought } = require('../models');
 
-// DONE getThoughts, 
-// DONE getSingleThought,
-// DONE createThought,
-// DONE updateThought,
-// DONE deleteThought,
-// DONE addReaction,
-// DONE removeReaction
-
 module.exports = {
 
     // get all thoughts

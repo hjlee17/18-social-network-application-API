@@ -1,12 +1,6 @@
 const { User, Thought } = require('../models');
 
-// DONE getUsers, 
-// INCOMPLETE getSingleUser,
-// DONE createUser,
-// DONE updateUser,
-// DONE deleteUser,
-// DONE addFriend,
-// DONE removeFriend
+// INCOMPLETE getSingleUser - needs debugging
 
 module.exports = {
 
