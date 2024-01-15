@@ -5,8 +5,8 @@ const { User, Thought } = require('../models');
 // DONE createUser,
 // DONE updateUser,
 // DONE deleteUser,
-// TODO addFriend,
-// TODO removeFriend
+// DONE addFriend,
+// DONE removeFriend
 
 module.exports = {
 
@@ -118,6 +118,25 @@ module.exports = {
     },
 
     // remove a friend from user by :userId and :friendId
-    async removeFriend(req, res) {}
+    async removeFriend(req, res) {
+        try {
+            const user = await User.findByIdAndUpdate(
+                { _id: req.params.userId },
+                // $pull to remove the user from the friends array belonging to the User
+                { $pull: { friends: req.params.friendId } },
+                { runValidators: true, new: true }
+            );
+    
+            // error handling to check for user
+            if (!user) {
+                return res.status(404).json({ message: 'No user with that ID' });
+            }
+
+            res.json({ message: 'Friend removed!' })
+
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
 
 };
