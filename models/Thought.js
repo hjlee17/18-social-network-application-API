@@ -1,21 +1,21 @@
-// do i need to include Type in the destructing below?
 const { Schema, Types, model } = require('mongoose');
 const formatDate = require('../utils/formatDate');
 
 const reactionSchema = new Schema(
     {
-        // is an id not made automatically by mongoose? why do i need 'reactionId'
+        // reactionId property is inluded per the README instructions, but
+        // is an id not made automatically by mongoose? why is 'reactionId' needed?
         reactionId: {
             type: Types.ObjectId,
-            default: () => new ObjectId()
+            default: () => new Types.ObjectId()
         },
-          reactionBody: {
+        reactionBody: {
             type: String,
             required: true,
             maxlength: 280
         },
-        // do i have to reference the user model?
-          username: {
+        // is it necessary to reference the User model?
+        username: {
             type: String,
             required: true
         },
@@ -29,6 +29,8 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true
         },
+        // unclear what this is doing?
+        id: false
     }
 );
 
@@ -45,7 +47,7 @@ const thoughtSchema = new Schema(
             default: Date.now,
             get: thoughtCreatedAt => formatDate(thoughtCreatedAt) 
         },
-        // do i have to reference the user model?
+        // is it necessary to reference the User model?
         username: {
             type: String,
             required: true
@@ -57,7 +59,7 @@ const thoughtSchema = new Schema(
             virtuals: true,
             getters: true
         },
-        // what is this doing???
+        // unclear what this is doing?
         id: false
     }
 );
