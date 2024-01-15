@@ -98,7 +98,26 @@ module.exports = {
     },
 
     // add a reaction to thought by _id (of thought)
-    async addReaction(req, res) {},
+    async addReaction(req, res) {
+        try {
+            const thought = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                // $addToSet to add the reaction to the reactions array belonging to the Thought
+                { $addToSet: { reactions: req.body} },
+                { runValidators: true, new: true }
+            );
+
+            // error handling to check for thought
+            if (!thought) {
+                return res.status(404).json({ message: 'No thought with that ID' });
+            }
+
+            res.json(thought);
+
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 
     // remove a reaction 
     // use reactionId in the req.body
