@@ -5,8 +5,8 @@ const { User, Thought } = require('../models');
 // DONE createThought,
 // DONE updateThought,
 // DONE deleteThought,
-// TODO addReaction,
-// TODO removeReaction
+// DONE addReaction,
+// DONE removeReaction
 
 module.exports = {
 
@@ -121,6 +121,37 @@ module.exports = {
 
     // remove a reaction 
     // use reactionId in the req.body
-    async removeReaction(req, res) {}
+    async removeReaction(req, res) {
+        try {
+            const thought = await Thought.findOne({ _id: req.params.thoughtId });
+
+            // error handling to check for thought
+            if (!thought) {
+                return res.status(404).json({ message: 'No thought with that ID' });
+            }
+    
+           // error handling to check for reaction
+            const reaction = thought.reactions.some(
+                reaction => reaction.reactionId == req.body.reactionId
+            );
+    
+            if (!reaction) {
+                return res.status(404).json({ message: 'No reaction with that ID found in this thought' });
+            }
+            
+           // if thought and reaction exist, then continue with removing reaction
+            await Thought.findByIdAndUpdate(
+                { _id: req.params.thoughtId },
+                // $pull to delete reaction from the reactions array belonging to Thought
+                { $pull: { reactions: { reactionId: req.body.reactionId } } },
+                { runValidators: true, new: true }
+            );
+    
+            res.json({ message: 'Reaction removed!' });
+
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }
 
 };
