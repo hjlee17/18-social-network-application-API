@@ -89,7 +89,33 @@ module.exports = {
     },
 
     // add a friend to user by :userId and :friendId
-    async addFriend(req, res) {},
+    async addFriend(req, res) {
+        try {
+            // error handling to check for user to be added as friend
+            const friend = await User.exists({ _id: req.params.friendId });
+            if (!friend) {
+                return res.status(404).json({ message: 'No user with that friend ID' });
+            }
+
+            // continue with adding friend
+            const user = await User.findByIdAndUpdate(
+                { _id: req.params.userId },
+                // $addToSet to add the friend to the friends array belonging to the User
+                { $addToSet: { friends: req.params.friendId } },
+                { runValidators: true, new: true }
+            );
+
+            // error handling to check for user
+            if (!user) {
+                return res.status(404).json({ message: 'No user with that ID' });
+            }
+
+            res.json(user);
+
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 
     // remove a friend from user by :userId and :friendId
     async removeFriend(req, res) {}
