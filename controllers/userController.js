@@ -1,7 +1,5 @@
 const { User, Thought } = require('../models');
 
-// INCOMPLETE getSingleUser - needs debugging
-
 module.exports = {
 
     // get all users
