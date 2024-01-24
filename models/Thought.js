@@ -3,7 +3,7 @@ const formatDate = require('../utils/formatDate');
 
 const reactionSchema = new Schema(
     {
-        // reactionId property is inluded per the README instructions, but
+        // reactionId property is included per the README instructions, but
         // is an id not made automatically by mongoose? why is 'reactionId' needed?
         reactionId: {
             type: Types.ObjectId,
@@ -14,7 +14,6 @@ const reactionSchema = new Schema(
             required: true,
             maxlength: 280
         },
-        // is it necessary to reference the User model?
         username: {
             type: String,
             required: true
@@ -29,7 +28,6 @@ const reactionSchema = new Schema(
         toJSON: {
             getters: true
         },
-        // unclear what this is doing?
         id: false
     }
 );
@@ -47,7 +45,6 @@ const thoughtSchema = new Schema(
             default: Date.now,
             get: thoughtCreatedAt => formatDate(thoughtCreatedAt) 
         },
-        // is it necessary to reference the User model?
         username: {
             type: String,
             required: true
@@ -59,7 +56,6 @@ const thoughtSchema = new Schema(
             virtuals: true,
             getters: true
         },
-        // unclear what this is doing?
         id: false
     }
 );
